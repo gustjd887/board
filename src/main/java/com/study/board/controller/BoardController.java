@@ -1,5 +1,6 @@
 package com.study.board.controller;
 
+import javax.naming.directory.SearchResult;
 import javax.persistence.Id;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,14 @@ public class BoardController {
     }
 
     @PostMapping("/board/writepro")
-    public String boardWritePro(Board board) {
+    public String boardWritePro(Model model, Board board) {
+
         boardService.write(board);
-        return "";
+
+        model.addAttribute("message", "글 작성이 완료되었습니다.");
+        model.addAttribute("searchUrl", "/board/list");
+
+        return "message";
     }
 
     @GetMapping("/board/list")
