@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.study.board.entity.Board;
 import com.study.board.service.BoardService;
 
@@ -61,13 +62,16 @@ public class BoardController {
     }
 
     @PostMapping("/board/update/{id}")
-    public String boardUpdate(@PathVariable("id") Integer id, Board board) {
+    public String boardUpdate(@PathVariable("id") Integer id, Model model, Board board) {
         Board boardTemp = boardService.boardView(id);
         boardTemp.setTitle(board.getTitle());
         boardTemp.setContent(board.getContent());
 
         boardService.write(boardTemp);
 
-        return "redirect:/board/list";
+        model.addAttribute("message", "수정되었습니다.");
+        model.addAttribute("searchUrl", "/board/list");
+
+        return "message";
     }
 }
